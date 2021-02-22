@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+     تسجيل حساب جديد
+{% endblock %}
+
+{% block main %}
+    <form dir="rtl" action="/register" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="اسم المستخدم" type="text">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="name" placeholder="اسمك الكامل" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="كلمة المرور" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="كلمة المرور مرة كمان" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="phone" placeholder="رقم تليفونك" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">تسجيل حساب جديد</button>
+    </form>
+{% endblock %}

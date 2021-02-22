@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+إستعلام
+{% endblock %}
+
+{% block main %}
+<form action="/history" method="post">
+  <div class="form-group newcaseform" dir="rtl">
+      <div class="row justify-content-center">
+          <div class="col-sm-6">
+    <input class="form-control" name="nationalid" id="exampleFormControlInput1" placeholder="ادخل الرقم القومي او رقم الهاتف او الاسم">
+        <input id="newcaseId" type="submit" class="btn btn-primary" value="إستعلم">
+        </div>
+     </div>
+  </div>
+</form>
+
+
+
+
+<script src="static/script.js"></script>
+{% endblock %}

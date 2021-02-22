@@ -1,0 +1,133 @@
+{% extends "layout.html" %}
+
+{% block title %}
+إستعلام
+{% endblock %}
+
+
+{% block main %}
+<h3  class="removewhenprint">أبحث عن شخص آخر</h3>
+<form class="removewhenprint" action="/history" method="post">
+  <div class="form-group newcaseform" dir="rtl">
+      <div class="row justify-content-center">
+          <div class="col-sm-6">
+    <input class="form-control" name="nationalid" id="exampleFormControlInput1" placeholder="ادخل الرقم القومي او رقم الهاتف او الاسم">
+        <input id="newcaseId" type="submit" class="btn btn-primary" value="إستعلم">
+        </div>
+     </div>
+  </div>
+</form>
+  <br><br><br>
+
+<h3 class="text-center">المعلومات الشخصية</h3> <br>
+<div dir="rtl" class="contanier  newcaseform card familyinfocard">
+    <div class="row">
+        <div class="col-12 col-md-4">
+        <h6>الأسم: {{informations[0]["name"]}}</h6>
+        </div>
+
+        <div class="col-12 col-md-4">
+        <h6>رقم الهاتف: {{informations[0]["phone"]}}</h6>
+        </div>
+
+        <div class="col-12 col-md-4">
+        <h6>الرقم القومي: {{informations[0]["nationalid"]}}</h6>
+        </div>
+    </div>
+        <br>
+    <div class="row">
+        <div class="col-12 col-md-4">
+        <h6>مكان الإصدار : {{informations[0]["placeofid"]}}</h6>
+        </div>
+
+        <div class="col-12 col-md-4">
+        <h6>تاريخ إصدارها : {{informations[0]["dateofid"]}}</h6>
+        </div>
+        <div class="col-12 col-md-4">
+        <h6> العنوان : {{informations[0]["address"]}}</h6>
+        </div>
+    </div>
+</div>
+
+<br><br><br>
+
+<h3 class="text-center">معلومات العائلة</h3> <br>
+<table dir="rtl" class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">الاسم</th>
+      <th scope="col">السن</th>
+      <th scope="col">العلاقة</th>
+      <th scope="col">الحالة الاجتماعية</th>
+      <th scope="col">الحالة الصحية</th>
+      <th scope="col">الحالة الثقافية</th>
+      <th scope="col">المهنة</th>
+      <th scope="col">الراتب </th>
+
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for krk in range(familyloop) %}
+    <tr>
+      <th scope="row">{{familia[krk]["name"]}}</th>
+      <td>{{familia[krk]["age"]}}</td>
+      <td>{{familia[krk]["relationships"]}}</td>
+      <td>{{familia[krk]["socialstate"]}}</td>
+      <td>{{familia[krk]["healthcondition"]}}</td>
+      <td>{{familia[krk]["degree"]}}</td>
+      <td>{{familia[krk]["job"]}}</td>
+      <td>{{familia[krk]["salary"]}}</td>
+
+    </tr>
+    {% endfor %}
+
+
+
+    </div>
+  </tbody>
+</table>
+
+{% if problemslen > 0 %}
+<br><br>
+<h5>شكاوى او حالات انسانية</h5>
+<div dir="rtl" class="contanier">
+    <div class="row justify-content-center">
+
+        {% for trt in range(problemslen) %}
+        <div class="col-12 col">
+            <div class="newcaseform card familyinfocard">
+            <div class="d-inline">تاريخ المشكلة: {{problems[trt]["time"]}}</div>
+            <p class="newcaseSize">{{problems[trt]["subject"]}}</p>
+        </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endif %}
+
+
+{% if jobselalen > 0 %}
+<br><br>
+<h5>طلبات التوظيف</h5>
+<div dir="rtl" class="contanier">
+    <div class="row justify-content-center">
+
+        {% for scs in range(jobselalen) %}
+        <div class="col-12 col">
+            <div class="newcaseform card familyinfocard">
+            <p>المؤهل : {{jobsela[scs]["degree"]}}</p>
+            <p class="newcaseSize">{{jobsela[scs]["experience"]}}</p>
+        </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endif %}
+
+<button class="removewhenprint" onclick="window.print()">طباعة الصفحة</button>
+
+<script src="static/script.js"></script>
+{% endblock %}
