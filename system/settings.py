@@ -25,7 +25,7 @@ SECRET_KEY = '%^0@o0c86&#sme0*$rouwn7ga1pmspky!sl*hxh^p%0$xytmzk'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['system.mwatansuez.com']
+ALLOWED_HOSTS = ['system.mwatansuez.com', '127.0.0.1']
 
 
 # Application definition
