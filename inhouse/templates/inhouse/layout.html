@@ -8,10 +8,9 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+        <script src="https://kit.fontawesome.com/f787d20291.js" crossorigin="anonymous"></script>
         <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <!-- https://favicon.io/emoji-favicons/money-mouth-face/ -->
         <link href="{% static 'inhouse/logo.png' %}" rel="icon" >
 
         <link href="{% static 'inhouse/styles.css' %}" rel="stylesheet">
@@ -26,23 +25,45 @@
 
         
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/"> <img class="logo" src="{% static '/inhouse/logo.png' %}" alt="شعار الحزب"/> </a>
+            <a class="navbar-brand" href="{% url 'index' %}"> <img class="logo" src="{% static '/inhouse/logo.png' %}" alt="شعار الحزب"/> </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
           
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                {% if session.user_id %}
+                {% if user.is_authenticated %}
                         <ul dir="rtl" class="navbar-nav ml-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/">الرئيسية</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/newcase">تسجيل حالة إنسانية</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/jobs">توظيف</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/history">إستعلام</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/#">طباعة بيان حالة</a></li>
-                        </ul>
-                        <ul dir= "rtl" class="navbar-nav mr-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/register">تسجيل حساب جديد</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/logout">تسجيل خروج</a></li>
+                            <li class="nav-item navbarAccountIcon dropdown">
+                                <a class="navbarAccountIcon" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="far fa-user-circle"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  <a class="dropdown-item" href="#">الحالات المسنودة</a>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="{% url 'logout' %}">تسجيل الخروج</a>
+                                </div>
+                              </li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">الرئيسية</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  الحالات
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  <a class="dropdown-item" href="{% url 'newcase' %}">تسجيل حالة جديدة</a>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#">عرض الحالات</a>
+                                </div>
+                              </li>
+                              <li dir="rtl" class="nav-item dropdown">
+                                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  طلبات التوظيف
+                                </a>
+                                <div dir="rtl" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  <a dir="rtl"class="dropdown-item" href="#"> تقديم طلب </a>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#">عرض الطلبات</a>
+                                </div>
+                              </li>                            <li class="nav-item"><a class="nav-link" href="/history">إستعلام</a></li>
                         </ul>
                     {% endif %}
             </div>

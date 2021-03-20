@@ -90,3 +90,21 @@ main img
 
 }
 }
+
+.navbarAccountIcon
+{
+    color: #5f5c57;
+    font-size: 30px;
+    margin-left: 15px;
+    
+}
+
+.navbar .dropdown-menu
+{
+    right: 0;
+}
+
+.dropdown-item
+{
+    text-align: center;
+}
