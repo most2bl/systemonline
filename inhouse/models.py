@@ -26,7 +26,7 @@ class Person(models.Model):
     personEducationLevel = models.CharField(Max_length=64)
 
 class Families(models.Model):
-    personaId = models.ForeignKey(Person, on_delete=models.CASCADE)     
+    personaId = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="relatives")     
     individualName = models.CharField(Max_length=64)
     individualAge = models.IntegerField()
     individualJob = models.CharField(max_length=64)
@@ -37,25 +37,25 @@ class Families(models.Model):
 
 class Cases(models.Model):
     caseCode = models.CharField(Max_length=12)
-    casePersonaId = models.ForeignKey(Person, on_delete=models.CASCADE)
+    casePersonaId = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="complain")
     casdId = models.AutoField()
     caseScannedDocs = models.BinaryField()
     caseTitle = models.CharField(max_length=64)
     caseDetails = models.TextField()
     caseStatus = models.CharField(Max_length=12)
     caseDate = models.DateTimeField()
-    caseResponsible = models.ForeignKey(Users, on_delete=models.CASCADE)
+    caseResponsible = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="responsible")
 
 
 class Jobs(models.Model):
     jobCode = models.CharField(Max_length=12)
-    jobPersonaId = models.ForeignKey(Person, on_delete=models.CASCADE)
+    jobPersonaId = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="applicants")
     jobId = models.AutoField()
     jobDate = models.DateTimeField()
     jobStatus = models.CharField(Max_length=12)
     jobEduLevel = models.CharField(max_length=64)
     jobEduMajor = models.CharField(max_length=64)
-    JobResponsible = models.ForeignKey(Users, on_delete=models.CASCADE)
+    JobResponsible = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="hr")
     jobScannedDocs = models.BinaryField()
     jobCV = models.BinaryField()
 
@@ -65,22 +65,22 @@ class Experience(models.Model):
     endingDate = models.IntegerField()
     companyName = models.CharField(max_length=64)
     role = models.CharField(max_length=64)
-    personaId = models.ForeignKey(Person, on_delete=models.CASCADE)     
+    personaId = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="experiences")     
 
     
 
 class caseComments(models.Model):
     caseCommentId = models.AutoField()
-    caseCommentCode = models.ForeignKey(Cases, on_delete=models.CASCADE)
+    caseCommentCode = models.ForeignKey(Cases, on_delete=models.CASCADE, related_name="caseUpdates")
     caseCommentText = models.TextField()
     caseCommentDate = models.DateTimeField()
-    caseCommentWriter = models.ForeignKey(Users, on_delete=models.CASCADE)
+    caseCommentWriter = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="caseCommentOwner")
 
 class jobComments(models.Model):
     jobCommentId = models.AutoField()
-    jobCommentCode = models.ForeignKey(Cases, on_delete=models.CASCADE)
+    jobCommentCode = models.ForeignKey(Cases, on_delete=models.CASCADE, related_name="jobUpdates")
     jobCommentText = models.TextField()
     jobCommentDate = models.DateTimeField()
-    JobCommentWriter = models.ForeignKey(Users, on_delete=models.CASCADE)
+    JobCommentWriter = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="jobCommentOwner")
 
 
