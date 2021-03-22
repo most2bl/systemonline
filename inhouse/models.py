@@ -1,11 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-class Users(models.Model):
-    userName = models.CharField(max_length=64)
-    realName = models.CharField(max_length=64)
-    phoneNum = models.CharField(max_length=12)  
-    userPassword = models.CharField(max_length=64)
 
 
 class Person(models.Model):
@@ -16,9 +12,8 @@ class Person(models.Model):
     personName = models.CharField(max_length=64)
     personPhoneNum = models.CharField(max_length=12)
     personAddress = models.TextField()
-    nationaldExpiryDate = models.DateField()
+    nationaldExpiryDate = models.CharField(max_length=32)
     idDistrict = models.CharField(max_length=64)
-    scannedId = models.BinaryField()
     personSalary = models.IntegerField()	
     personJob = models.CharField(max_length=64)
     personEducationLevel = models.CharField(max_length=64)
@@ -41,7 +36,7 @@ class Cases(models.Model):
     caseDetails = models.TextField()
     caseStatus = models.CharField(max_length=12)
     caseDate = models.DateTimeField()
-    caseResponsible = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="responsible")
+    caseResponsible = models.OneToOneField(User, on_delete=models.CASCADE, related_name="responsible")
 
 
 class Jobs(models.Model):
@@ -51,7 +46,7 @@ class Jobs(models.Model):
     jobStatus = models.CharField(max_length=12)
     jobEduLevel = models.CharField(max_length=64)
     jobEduMajor = models.CharField(max_length=64)
-    JobResponsible = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="hr")
+    JobResponsible = models.OneToOneField(User, on_delete=models.CASCADE, related_name="hr")
     jobScannedDocs = models.BinaryField()
     jobCV = models.BinaryField()
 
@@ -69,12 +64,12 @@ class caseComments(models.Model):
     caseCommentCode = models.ForeignKey(Cases, on_delete=models.CASCADE, related_name="caseUpdates")
     caseCommentText = models.TextField()
     caseCommentDate = models.DateTimeField()
-    caseCommentWriter = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="caseCommentOwner")
+    caseCommentWriter = models.OneToOneField(User, on_delete=models.CASCADE, related_name="caseCommentOwner")
 
 class jobComments(models.Model):
     jobCommentCode = models.ForeignKey(Cases, on_delete=models.CASCADE, related_name="jobUpdates")
     jobCommentText = models.TextField()
     jobCommentDate = models.DateTimeField()
-    JobCommentWriter = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="jobCommentOwner")
+    JobCommentWriter = models.OneToOneField(User, on_delete=models.CASCADE, related_name="jobCommentOwner")
 
 

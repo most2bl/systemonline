@@ -108,3 +108,20 @@ main img
 {
     text-align: center;
 }
+
+.flashmessage
+{
+    width: 100%;
+    color: white;
+    background: #5bafa0;
+    padding: 10px;
+    font-family: cairo;
+    font-weight: bold;
+    text-align: center;
+}
+
+.submittt 
+{
+    display: table;
+    margin: auto;
+}
