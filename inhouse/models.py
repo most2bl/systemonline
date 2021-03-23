@@ -31,7 +31,7 @@ class Families(models.Model):
 class Cases(models.Model):
     caseCode = models.CharField(max_length=12)
     casePersonaId = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="complain")
-    caseScannedDocs = models.BinaryField()
+    caseScannedDocs = models.FileField(upload_to='inhouse')
     caseTitle = models.CharField(max_length=64)
     caseDetails = models.TextField()
     caseStatus = models.CharField(max_length=12)

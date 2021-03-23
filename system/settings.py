@@ -120,3 +120,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = "/home/mwatrdvm/adminroot/inhouse/static"
+
+MEDIA_ROOT = ''
+MEDIA_URL = ''
