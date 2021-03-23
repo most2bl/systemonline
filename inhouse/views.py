@@ -141,6 +141,13 @@ def newcase(request):
            
         
         return render(request, "inhouse/newcase.html", {
-                "message" : "تم إدخال البيانات بنجاح"
+                "message" : f"تم إدخال البيانات بنجاح, كود متابعة الطلب هو {caseCode}"
             })     
+
+def applyingjob(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+
+    if request.method == "GET":    
+        return render(request, "inhouse/jobs.html")
 

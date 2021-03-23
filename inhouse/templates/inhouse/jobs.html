@@ -1,17 +1,22 @@
-{% extends "layout.html" %}
+{% extends "inhouse/layout.html" %}
+{% load static %}
 
 {% block title %}
-طلب توظيف
+طلب توظيف 
 {% endblock %}
 
 {% block main %}
 
-
-        <div class="container">
-
-                <h2 align="center">معلومات البطاقة والتواصل</h2>
+{% if message %}
+<div class="flashmessage">{{message}}</div>
+<br>
+{% endif %}       
+        <div class="container p-5">
+        
+                <h2 align ="center">المعلومات الشخصية ومعلومات التواصل </h2>
                 <div dir="rtl" class="form-group">
-                     <form dir="rtl" action="/jobs" method="post" name="add_name" id="add_name">
+                     <form dir="rtl" action="{% url 'newcase' %}" method="post" name="add_name" id="add_name">
+                        {% csrf_token %} 
                          <!-- The information section -->
                                      <div class="form-group newcaseform">
                             <div class="row">
@@ -39,128 +44,179 @@
                                             <input class="form-control"  type="text" name="thedate" placeholder="تاريخ الصدور "  id="example-date-input">
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-12 col-md-4">
+                                            <select class="form-control" name="thehealthstate">
+                                                <option  selected="" value="لم يتم التحديد">الحالة الصحية لمقدم الطلب </option>
+                                                <option value="جيدة ">جيدة </option>
+                                                <option value="متوسطة">متوسطة</option>
+                                                <option value="متدهورة">متدهورة</option>
+                                                <option value="5%">5%</option>
+                                            </select>
+                                          </div>
+  
+                                          <div class="col-12 col-md-4">
+                                            <select class="form-control" name="thesocialstate">
+                                                <option selected="" value="لم يتم التحديد">الحالة الإجتماعية لمقدم الطلب</option>
+                                                <option value="أعزب/عازبة">أعزب/عازبة</option>
+                                                <option value="متزوج/متزوجة">متزوج/متزوجة</option>
+                                                <option value="مطلق/مطلقة">مطلق/مطلقة</option>
+                                                <option value="ارمل/أرملة">ارمل/ارملة</option>
+                                                <option value="متوفي/متوفية">متوفي/متوفية</option>
+                                            </select>
+                                          </div>
+  
+                                          <div class="col-12 col-md-4">
+                                              <input class="form-control"  type="text" name="TheJob" placeholder="الوظيفة"  id="example-date-input">
+                                          </div>
+                                      </div>
+
+                                      <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <select class="form-control" name="thedegree">
+                                                <option  selected="" value="لم يتم التحديد">المؤهل الدراسي</option>
+                                                <option value="أمي">أمي</option>
+                                                <option value="محو أمية">محو امية</option>
+                                                <option value="الإبتدائية">الإبتدائية</option>
+                                                <option value="الإعدادية">الإعدادية</option>
+                                                <option value="دبلوم">دبلوم</option>
+                                                <option value="ثانوي">ثانوي</option>
+                                                <option value="مؤهل فوق متوسط">مؤهل فوق متوسط</option>
+                                                <option value="مؤهل عالي">بكالريوس</option>
+                                                <option value="درسات عليا">درسات عليا وما بعدها</option>
+                    
+                    
+                                            </select>
+                                          </div>
+  
+                
+  
+                                          <div class="col-12 col-md-6">
+                                              <input class="form-control"  type="text" name="thesalaryy" placeholder="الراتب"  id="example-date-input">
+                                          </div>
+                                      </div>
                             </div>
 
-                     <h2 align="center">معلومات العائلة </h2>
-
+                     
+                        <!--Family information section-->
+                        <h2 align="center">معلومات العائلة </h2>
                           <div>
                             <div id="dynamic_field" class="container newcaseform card familyinfocard">
-         <div class="form-group ">
-                <div class="insidedynamic">
-            <div class="row">
-                    <div class="col-12 col-md-3">
-                        <input autocomplete="off" autofocus class="form-control" name="thename0[]" placeholder="الاسم" type="text">
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <input autocomplete="off" autofocus class="form-control" name="age0[]" placeholder="السن" type="text">
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <select class="form-control" name="relationship0[]">
-                            <option disabled="" selected="" value="">الدور الأسري</option>
-                            <option value="رب الأسرة">رب الأسرة</option>
-                            <option value="الزوجة">الزوجة</option>
-                            <option value="الأم/الأب">الأم/الأب</option>
-                            <option value="الأخ/الأخت">الأخ/الأخت</option>
-                            <option value="الأبن/الأبنة">الأبن/الأبنة</option>
-                            <option value="الحفيد/الحفيدة">الحفيد/الحفيدة</option>
+                                <div class="form-group d-none ">
+                                    <div class="insidedynamic">
+                                <div class="row">
+                                        <div class="col-12 col-md-3">
+                                            <input type="submit" autocomplete="off" autofocus class="form-control" value = "basecase" name="thename0[]" placeholder="الاسم" type="text">
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <input type="submit" autocomplete="off" autofocus class="form-control" name="age0[]" placeholder="السن" type="text">
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <select class="form-control" name="relationship0[]">
+                                                <option disabled="" selected="" value="">الدور الأسري</option>
+                                                <option value="رب الأسرة">رب الأسرة</option>
+                                                <option value="الزوجة">الزوجة</option>
+                                                <option value="الأم/الأب">الأم/الأب</option>
+                                                <option value="الأخ/الأخت">الأخ/الأخت</option>
+                                                <option value="الأبن/الأبنة">الأبن/الأبنة</option>
+                                                <option value="الحفيد/الحفيدة">الحفيد/الحفيدة</option>
+                    
+                                            </select>                    </div>
+                                          <div class="col-12 col-md-3">
+                                            <select class="form-control" name="socialstate0[]">
+                                                <option disabled="" selected="" value="">الحالة الإجتماعية</option>
+                                                <option value="أعزب/عازبة">أعزب/عازبة</option>
+                                                <option value="متزوج/متزوجة">متزوج/متزوجة</option>
+                                                <option value="مطلق/مطلقة">مطلق/مطلقة</option>
+                                                <option value="ارمل/أرملة">ارمل/ارملة</option>
+                                                <option value="متوفي/متوفية">متوفي/متوفية</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                    
+                                      <div class="row">
+                                        <div class="col-12 col-md-3">
+                                            <select class="form-control" name="healthstate0[]">
+                                                <option disabled="" selected="" value="">الحالة الصحية</option>
+                                                <option value="جيدة">جيدة</option>
+                                                <option value="متوسطة">متوسطة</option>
+                                                <option value="متهدورة">متدهورة</option>
+                    
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <select class="form-control" name="degree0[]">
+                                                <option disabled="" selected="" value="">المؤهل الدراسي</option>
+                                                <option value="أمي">أمي</option>
+                                                <option value="محو أمية">محو امية</option>
+                                                <option value="الإبتدائية">الإبتدائية</option>
+                                                <option value="الإعدادية">الإعدادية</option>
+                                                <option value="دبلوم">دبلوم</option>
+                                                <option value="ثانوي">ثانوي</option>
+                                                <option value="مؤهل فوق متوسط">مؤهل فوق متوسط</option>
+                                                <option value="مؤهل عالي">بكالريوس</option>
+                                                <option value="درسات عليا">درسات عليا وما بعدها</option>
+                    
+                    
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <input type="submit" class="form-control" name="job0" placeholder="الوظيفة" type="text">
+                                        </div>
+                                          <div class="col-12 col-md-3">
+                                            <input type="submit" class="form-control" name="salary0" placeholder="الراتب" type="text">
+                                        </div>
+                                    </div>
+                            </div>
+                            </div>
 
-                        </select>                    </div>
-                      <div class="col-12 col-md-3">
-                        <select class="form-control" name="socialstate0[]">
-                            <option disabled="" selected="" value="">الحالة الإجتماعية</option>
-                            <option value="أعزب/عازبة">أعزب/عازبة</option>
-                            <option value="متزوج/متزوجة">متزوج/متزوجة</option>
-                            <option value="مطلق/مطلقة">مطلق/مطلقة</option>
-                            <option value="ارمل/أرملة">ارمل/ارملة</option>
-                            <option value="متوفي/متوفية">متوفي/متوفية</option>
 
-                        </select>
-                    </div>
-                </div>
-
-                  <div class="row">
-                    <div class="col-12 col-md-3">
-                        <select class="form-control" name="healthstate0[]">
-                            <option disabled="" selected="" value="">الحالة الصحية</option>
-                            <option value="جيدة">جيدة</option>
-                            <option value="متوسطة">متوسطة</option>
-                            <option value="متهدورة">متدهورة</option>
-
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <select class="form-control" name="degree0[]">
-                            <option disabled="" selected="" value="">المؤهل الدراسي</option>
-                            <option value="أمي">أمي</option>
-                            <option value="محو أمية">محو امية</option>
-                            <option value="الإبتدائية">الإبتدائية</option>
-                            <option value="الإعدادية">الإعدادية</option>
-                            <option value="دبلوم">دبلوم</option>
-                            <option value="ثانوي">ثانوي</option>
-                            <option value="مؤهل فوق متوسط">مؤهل فوق متوسط</option>
-                            <option value="مؤهل عالي">بكالريوس</option>
-                            <option value="درسات عليا">درسات عليا وما بعدها</option>
-
-
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <input class="form-control" name="job0"  placeholder="الوظيفة" type="text">
-                    </div>
-                      <div class="col-12 col-md-3">
-                        <input class="form-control" name="salary0" placeholder="الراتب" type="text">
-                    </div>
-                </div>
         </div>
-        </div>
 
-
-        </div>
-
-        <td><button type="button" name="add" id="add" class="btn btn-success col align-self-center">إضافة فرد</button></td>
+        <td><button type="button" name="add" id="add" class="btn btn-success col align-self-center">إضافة فرد من افراد العائلة</button></td>
                           </div>
+                        <!--End of Family information section-->
+                        <br><br>
+                          
 <br><br>
-                           <h2 align="center">الخبرة العلمية</h2>
+                           <h2 align="center">تفاصيل المؤهل الدراسي والخبرة</h2>
                               <div class="form-group newcaseform">
                             <div class="row justify-content-center">
                                     <div class="col-12 col-md-3 ">
-                                        <input autocomplete="off" autofocus class="form-control" name="title" placeholder="الدرجة العلمية" type="text">
+                                        <input autocomplete="off" autofocus class="form-control" name="university" placeholder="اسم الجامعة / المعهد" type="text">
                                     </div>
+                                    <div class="col-12 col-md-3 ">
+                                        <input autocomplete="off" autofocus class="form-control" name="department" placeholder="التخصص والقسم" type="text">
+                                    </div>
+                                    
                                 </div>
-                                <h4 align="center">تفاصيل المؤهل</h4>
+                                <br><br>
                                 <div class="row justify-content-center">
+                                    <h3>ملاحظات إضافية</h3>
                                       <div class="col-12 col-md-12">
-                                          <textarea name="subject" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                          <textarea name="subject" class="form-control textareaClass" id="exampleFormControlTextarea1" rows="3"></textarea>
                                     </div>
 
                                 </div>
-                                <input name="formsnum" style="display:none;" value="1" id="khara">
-                                    <input id="newcaseId" type="submit" class="btn btn-primary" value="إرسال">
+                                <input name="formsnum" style="display:none;" value="0" id="khara">
+                                <br><br>
+
+                                <label class="form-label" for="customFile">قم بإدراج الأوراق والسيرة الذاتية في ملف PDF</label>
+                                <input type="file" name="uploadedfile" class="form-control uploaaad" id="customFile" />
+                                
+                                    <input id="newcaseId" type="submit" class="btn btn-primary submittt" value="إرسال">
                             </div>
                      </form>
                 </div>
            </div>
-           <script>
-               $(document).ready(function(){
-      var i=0;
-      var counter = 1;
-      $('#add').click(function(){
-            counter++;
-            document.getElementById("khara").value = counter;
-            i++;
-$('#dynamic_field').append('<div id="row'+i+'"> <div class="form-group "> <div class="insidedynamic"> <div class="row"> <div class="col-12 col-md-3"> <input autocomplete="off" autofocus class="form-control" name="thename'+i+'[]" placeholder="الاسم" type="text"> </div> <div class="col-12 col-md-3"> <input autocomplete="off" autofocus class="form-control" name="age'+i+'[]" placeholder="السن" type="text"> </div> <div class="col-12 col-md-3"> <select class="form-control" name="relationship'+i+'[]"> <option disabled="" selected="" value="">الدور الأسري</option> <option value="رب الأسرة">رب الأسرة</option> <option value="الزوجة">الزوجة</option> <option value="الأم/الأب">الأم/الأب</option> <option value="الأخ/الأخت">الأخ/الأخت</option> <option value="الأبن/الأبنة">الأبن/الأبنة</option> <option value="الحفيد/الحفيدة">الحفيد/الحفيدة</option> </select>                    </div> <div class="col-12 col-md-3"> <select class="form-control" name="socialstate'+i+'[]"> <option disabled="" selected="" value="">الحالة الإجتماعية</option> <option value="أعزب/عازبة">أعزب/عازبة</option> <option value="متزوج/متزوجة">متزوج/متزوجة</option> <option value="مطلق/مطلقة">مطلق/مطلقة</option> <option value="ارمل/أرملة">ارمل/ارملة</option> <option value="متوفي/متوفية">متوفي/متوفية</option> </select> </div> </div> <div class="row"> <div class="col-12 col-md-3"> <select class="form-control" name="healthstate'+i+'[]"> <option disabled="" selected="" value="">الحالة الصحية</option> <option value="جيدة">جيدة</option> <option value="متوسطة">متوسطة</option> <option value="متهدورة">متدهورة</option> </select> </div> <div class="col-12 col-md-3"> <select class="form-control" name="degree'+i+'[]"> <option disabled="" selected="" value="">المؤهل الدراسي</option> <option value="أمي">أمي</option> <option value="محو أمية">محو امية</option> <option value="الإبتدائية">الإبتدائية</option> <option value="الإعدادية">الإعدادية</option> <option value="دبلوم">دبلوم</option> <option value="ثانوي">ثانوي</option> <option value="مؤهل فوق متوسط">مؤهل فوق متوسط</option> <option value="مؤهل عالي">بكالريوس</option> <option value="درسات عليا">درسات عليا وما بعدها</option> </select> </div> <div class="col-12 col-md-3"> <input class="form-control" name="job'+i+'"  placeholder="الوظيفة" type="text"> </div> <div class="col-12 col-md-3"> <input class="form-control" name="salary'+i+'"  placeholder="الراتب" type="text"> </div> </div> </div> </div> <td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">حذف الفرد</button></td></div>');      });
-      $(document).on('click', '.btn_remove', function(){
-           var button_id = $(this).attr("id");
-           $('#row'+button_id+'').remove();
-           i--;
-           counter--;
-           document.getElementById("khara").value = counter;
-      });
-
- });
+      
 
 
-           </script>
 
-<script src="static/script.js"></script>
+
+
+           
+    <script src="{% static 'inhouse/script.js' %}"></script>
+
 {% endblock %}

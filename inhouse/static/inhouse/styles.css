@@ -130,3 +130,8 @@ main img
 {
     height: 45px;
 }
+.textareaClass
+{
+    white-space: pre-wrap;
+
+}
