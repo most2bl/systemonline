@@ -125,3 +125,8 @@ main img
     display: table;
     margin: auto;
 }
+
+#customFile
+{
+    height: 45px;
+}

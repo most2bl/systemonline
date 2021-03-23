@@ -5,6 +5,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import *
 from .helpers import *
+from random import randint
+from datetime import datetime
+
 # Create your views here.
 
 # The Index page
@@ -42,7 +45,7 @@ def newcase(request):
     if request.method == "GET":    
         return render(request, "inhouse/newcase.html")
     else:
-        # Persona information
+        # Persona information handling
         name = request.POST["thename"]
         nationalId = request.POST["theid"]
         if not nationalId.isdigit():
@@ -61,15 +64,83 @@ def newcase(request):
         nationaldExpiryDate = request.POST["thedate"]
         idDistrict = request.POST["theplace"]
         job = request.POST["TheJob"]
-        salary = int(request.POST["thesalaryy"])
+        salary = request.POST["thesalaryy"]
         if not salary.isdigit():
             return render(request, "inhouse/newcase.html", {
                 "message" : "برجاء إدخال ارقام فقط في خانة راتب  مقدم الطلب "
             }) 
+        salary = int(request.POST["thesalaryy"])    
         degree = request.POST["thedegree"]
+
+        # Family information handling
+        numOfForms = request.POST["formsnum"]
+        isExist = Person.objects.filter(nationalId = nationalId)
+        if not isExist:
+            for i in range(int(numOfForms)):
+                ftheName = request.POST[f"thename{i}[]"]
+                if ftheName: 
+                    ftheAge = request.POST[f"age{i}[]"]
+                    frelationship = request.POST[f"relationship{i}[]"]
+                    fsocialstate = request.POST[f"socialstate{i}[]"]
+                    fhealthstate = request.POST[f"healthstate{i}[]"]
+                    fdegree = request.POST[f"degree{i}[]"]
+                    fjob = request.POST[f"job{i}"]
+                    if not fjob:
+                        fjob = "بدون وظيفة"
+                    fsalary = request.POST[f"salary{i}"]
+                    if not fsalary:
+                        fsalary = 0
+                    if not fsalary.isdigit() or not ftheAge.isdigit():
+                        return render(request, "inhouse/newcase.html", {
+                        "message" : "برجاء إدخال جميع بيانات العائلة بشكل صحيح"
+                         }) 
+
+        # Title and case content handling
+        cTitle = request.POST["title"]
+        cContent = request.POST["subject"]
+        if not cContent:
+            return render(request, "inhouse/newcase.html", {
+                        "message" : "برجاء إدخال تفاصيل المشكلة"
+                         }) 
+        uploadedfile = request.POST["uploadedfile"]
+        while True:
+            caseCode =  f"9{randint(1,999999)}"
+            caseExist = Cases.objects.filter(caseCode = caseCode)
+            if not caseExist:
+                break
+        caseStatus = "new"
+        now = datetime.now()
+        xZDate = now.strftime('%Y-%m-%d %H:%M:%S')
+        current_user = request.user
         #Insert into persona info
-        theperson = Person.objects.create(socialState=socialState, healthState=healthState, age=age, nationalId=nationalId, personName=name, personPhoneNum=personPhoneNum, personAddress=personAddress,nationaldExpiryDate=nationaldExpiryDate, idDistrict=idDistrict, personJob=job,personSalary=salary, personEducationLevel=degree)
+        if not isExist:
+            theperson = Person.objects.create(socialState=socialState, healthState=healthState, age=age, nationalId=nationalId, personName=name, personPhoneNum=personPhoneNum, personAddress=personAddress,nationaldExpiryDate=nationaldExpiryDate, idDistrict=idDistrict, personJob=job,personSalary=salary, personEducationLevel=degree)
+   
+        # Inserting into families info
+        if not isExist:
+            for i in range(int(numOfForms)):
+                ftheName = request.POST[f"thename{i}[]"]
+                if ftheName: 
+                    ftheAge = int(request.POST[f"age{i}[]"])
+                    frelationship = request.POST[f"relationship{i}[]"]
+                    fsocialstate = request.POST[f"socialstate{i}[]"]
+                    fhealthstate = request.POST[f"healthstate{i}[]"]
+                    fdegree = request.POST[f"degree{i}[]"]
+                    fjob = request.POST[f"job{i}"]
+                    if not fjob:
+                        fjob = "بدون وظيفة"
+                    fsalary = request.POST[f"salary{i}"]
+                    if not fsalary:
+                        fsalary = 0
+                    fthePerson = Families.objects.create(personaId=Person.objects.get(nationalId = nationalId), individualName=ftheName, individualAge=ftheAge, individualJob=fjob, individualHealthState=fhealthstate,individualSocialState=fsocialstate, individualEduLevel=fdegree, individualSalary=fsalary)
+        # Inserting into Cases
+        if uploadedfile:
+            cTheCase = Cases.objects.create(caseCode=caseCode,casePersonaId=Person.objects.get(nationalId = nationalId),caseScannedDocs=uploadedfile,caseTitle=cTitle,caseDetails=cContent,caseStatus=caseStatus,caseDate=xZDate, caseResponsible = User.objects.get(id = current_user.id))
+        else:
+            cTheCase = Cases.objects.create(caseCode=caseCode,casePersonaId=Person.objects.get(nationalId = nationalId),caseTitle=cTitle,caseDetails=cContent,caseStatus=caseStatus,caseDate=xZDate, caseResponsible = User.objects.get(id = current_user.id))
+           
+        
         return render(request, "inhouse/newcase.html", {
                 "message" : "تم إدخال البيانات بنجاح"
-            })        
-    
+            })     
+
