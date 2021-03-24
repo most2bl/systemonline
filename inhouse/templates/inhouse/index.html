@@ -5,6 +5,22 @@
 {% endblock %}
 
 {% block main %}
+{% if message %}
+<div class="flashmessage">{{message}}</div>
+<br>
+{% endif %}    
+<form action="{% url 'query' %}" method="post">
+  {% csrf_token %} 
+  <div class="form-group newcaseform" dir="rtl">
+      <div class="row justify-content-center">
+          <div class="col-sm-6">
+    <input class="form-control" name="nationalid" id="exampleFormControlInput1" placeholder="ادخل الرقم القومي او رقم الهاتف او كود الطلب">
+        <input id="newcaseId" type="submit" class="btn btn-primary" value="إستعلم">
+        </div>
+     </div>
+  </div>
+</form>
+
 <section id="indexsection">
 <div class="container">
 <div dir="rtl" class="row">

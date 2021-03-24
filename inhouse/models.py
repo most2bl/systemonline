@@ -28,6 +28,7 @@ class Families(models.Model):
     individualSocialState = models.CharField(max_length=12)
     individualEduLevel = models.CharField(max_length=12)
     individualSalary = models.IntegerField()
+    individualRole = models.CharField(max_length=32, blank=True)
 
 class Cases(models.Model):
     caseCode = models.CharField(max_length=12)

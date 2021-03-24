@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "inhouse/layout.html" %}
 
 {% block title %}
 إستعلام
@@ -23,28 +23,28 @@
 <div dir="rtl" class="contanier  newcaseform card familyinfocard">
     <div class="row">
         <div class="col-12 col-md-4">
-        <h6>الأسم: {{informations[0]["name"]}}</h6>
+        <h6>الأسم: {{personInfo.personName}}</h6>
         </div>
 
         <div class="col-12 col-md-4">
-        <h6>رقم الهاتف: {{informations[0]["phone"]}}</h6>
+        <h6>رقم الهاتف: {{personInfo.personPhoneNum}}</h6>
         </div>
 
         <div class="col-12 col-md-4">
-        <h6>الرقم القومي: {{informations[0]["nationalid"]}}</h6>
+        <h6>الرقم القومي: {{personInfo.nationalId}}</h6>
         </div>
     </div>
         <br>
     <div class="row">
         <div class="col-12 col-md-4">
-        <h6>مكان الإصدار : {{informations[0]["placeofid"]}}</h6>
+        <h6>مكان الإصدار : {{personInfo.idDistrict}}</h6>
         </div>
 
         <div class="col-12 col-md-4">
-        <h6>تاريخ إصدارها : {{informations[0]["dateofid"]}}</h6>
+        <h6>تاريخ إصدارها : {{personInfo.nationaldExpiryDate}}</h6>
         </div>
         <div class="col-12 col-md-4">
-        <h6> العنوان : {{informations[0]["address"]}}</h6>
+        <h6> العنوان : {{personInfo.personAddress}}</h6>
         </div>
     </div>
 </div>
@@ -68,16 +68,16 @@
     </tr>
   </thead>
   <tbody>
-    {% for krk in range(familyloop) %}
+    {% for member in familiyInfo %}
     <tr>
-      <th scope="row">{{familia[krk]["name"]}}</th>
-      <td>{{familia[krk]["age"]}}</td>
-      <td>{{familia[krk]["relationships"]}}</td>
-      <td>{{familia[krk]["socialstate"]}}</td>
-      <td>{{familia[krk]["healthcondition"]}}</td>
-      <td>{{familia[krk]["degree"]}}</td>
-      <td>{{familia[krk]["job"]}}</td>
-      <td>{{familia[krk]["salary"]}}</td>
+      <th scope="row">{{member.individualName}}</th>
+      <td>{{member.individualAge}}</td>
+      <td>{{member.individualRole}}</td>
+      <td>{{member.individualSocialState}}</td>
+      <td>{{member.individualHealthState}}</td>
+      <td>{{member.individualEduLevel}}</td>
+      <td>{{member.individualJob}}</td>
+      <td>{{member.individualSalary}}</td>
 
     </tr>
     {% endfor %}
@@ -88,17 +88,18 @@
   </tbody>
 </table>
 
-{% if problemslen > 0 %}
+
+{% if cases %}
 <br><br>
 <h5>شكاوى او حالات انسانية</h5>
 <div dir="rtl" class="contanier">
     <div class="row justify-content-center">
 
-        {% for trt in range(problemslen) %}
+        {% for case in cases %}
         <div class="col-12 col">
             <div class="newcaseform card familyinfocard">
-            <div class="d-inline">تاريخ المشكلة: {{problems[trt]["time"]}}</div>
-            <p class="newcaseSize">{{problems[trt]["subject"]}}</p>
+            <div class="d-inline">تاريخ المشكلة: {{case.caseDate}}</div>
+            <p class="newcaseSize">{{case.caseDetails}}</p>
         </div>
         </div>
         {% endfor %}
@@ -108,20 +109,20 @@
 {% endif %}
 
 
-{% if jobselalen > 0 %}
+{% if jobs %}
 <br><br>
 <h5>طلبات التوظيف</h5>
 <div dir="rtl" class="contanier">
     <div class="row justify-content-center">
 
-        {% for scs in range(jobselalen) %}
+        {% for request in jobs %}
         <div class="col-12 col">
             <div class="newcaseform card familyinfocard">
-            <p>المؤهل : {{jobsela[scs]["degree"]}}</p>
-            <p class="newcaseSize">{{jobsela[scs]["experience"]}}</p>
+            <p>المؤهل : {{request.jobEduMajor}}</p>
+            <p class="newcaseSize"> {{request.jobExtraDetails}}</p>
         </div>
         </div>
-        {% endfor %}
+        {% endfor %} 
 
     </div>
 </div>
@@ -129,5 +130,4 @@
 
 <button class="removewhenprint" onclick="window.print()">طباعة الصفحة</button>
 
-<script src="static/script.js"></script>
 {% endblock %}

@@ -45,7 +45,7 @@ def newcase(request):
     if request.method == "GET":    
         return render(request, "inhouse/newcase.html")
     else:
-        # Persona information handling
+# Persona information handling
         name = request.POST["thename"]
         nationalId = request.POST["theid"]
         if not nationalId.isdigit():
@@ -72,7 +72,7 @@ def newcase(request):
         salary = int(request.POST["thesalaryy"])    
         degree = request.POST["thedegree"]
 
-        # Family information handling
+# Family information handling
         numOfForms = request.POST["formsnum"]
         isExist = Person.objects.filter(nationalId = nationalId)
         if not isExist:
@@ -95,7 +95,7 @@ def newcase(request):
                         "message" : "برجاء إدخال جميع بيانات العائلة بشكل صحيح"
                          }) 
 
-        # Title and case content handling
+# Title and case content handling
         cTitle = request.POST["title"]
         cContent = request.POST["subject"]
         if not cContent:
@@ -112,11 +112,11 @@ def newcase(request):
         now = datetime.now()
         xZDate = now.strftime('%Y-%m-%d %H:%M:%S')
         current_user = request.user
-        #Insert into persona info
+#Insert into persona info
         if not isExist:
             theperson = Person.objects.create(socialState=socialState, healthState=healthState, age=age, nationalId=nationalId, personName=name, personPhoneNum=personPhoneNum, personAddress=personAddress,nationaldExpiryDate=nationaldExpiryDate, idDistrict=idDistrict, personJob=job,personSalary=salary, personEducationLevel=degree)
    
-        # Inserting into families info
+# Inserting into families info
         if not isExist:
             for i in range(int(numOfForms)):
                 ftheName = request.POST[f"thename{i}[]"]
@@ -133,7 +133,7 @@ def newcase(request):
                     if not fsalary:
                         fsalary = 0
                     fthePerson = Families.objects.create(personaId=Person.objects.get(nationalId = nationalId), individualName=ftheName, individualAge=ftheAge, individualJob=fjob, individualHealthState=fhealthstate,individualSocialState=fsocialstate, individualEduLevel=fdegree, individualSalary=fsalary)
-        # Inserting into Cases
+# Inserting into Cases
         if uploadedfile:
             cTheCase = Cases.objects.create(caseCode=caseCode,casePersonaId=Person.objects.get(nationalId = nationalId),caseScannedDocs=uploadedfile,caseTitle=cTitle,caseDetails=cContent,caseStatus=caseStatus,caseDate=xZDate, caseResponsible = User.objects.get(id = current_user.id))
         else:
@@ -237,7 +237,7 @@ def applyingjob(request):
                     fsalary = request.POST[f"salary{i}"]
                     if not fsalary:
                         fsalary = 0
-                    fthePerson = Families.objects.create(personaId=Person.objects.get(nationalId = nationalId), individualName=ftheName, individualAge=ftheAge, individualJob=fjob, individualHealthState=fhealthstate,individualSocialState=fsocialstate, individualEduLevel=fdegree, individualSalary=fsalary)
+                    fthePerson = Families.objects.create(individualRole=frelationship,personaId=Person.objects.get(nationalId = nationalId), individualName=ftheName, individualAge=ftheAge, individualJob=fjob, individualHealthState=fhealthstate,individualSocialState=fsocialstate, individualEduLevel=fdegree, individualSalary=fsalary)
  # Inserting into Jobs
         if uploadedfile:
             cTheCase = Jobs.objects.create(jobCode=caseCode,jobPersonaId=Person.objects.get(nationalId = nationalId),jobCV=uploadedfile,jobUniversity=jUniversity,jobExtraDetails=cContent,jobStatus=caseStatus,jobDate=xZDate, JobResponsible = User.objects.get(id = current_user.id),jobEduMajor=jDepartment)
@@ -247,4 +247,47 @@ def applyingjob(request):
         
         return render(request, "inhouse/jobs.html", {
                 "message" : f"تم تقديم طلب توظيف بنجاح, كود متابعة الطلب هو {caseCode}"
-            })                            
+            })         
+
+# Query function
+def query(request):
+# Make Sure the user logged in
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+# If the page method is GET
+    if request.method == "GET":    
+        return render(request, "inhouse/search.html")
+# If the page method is POST    
+    else:
+        nationalid = request.POST['nationalid']
+# If the user serached by ID    
+        if len(nationalid) == 14:
+            isExist = Person.objects.filter(nationalId = nationalid)
+            if isExist:
+                isExist = Person.objects.get(nationalId = nationalid)
+                return render(request, "inhouse/searched.html",{
+                    "personInfo" : Person.objects.get(nationalId = nationalid),
+                    "familiyInfo" : isExist.relatives.all(),
+                    "cases": isExist.complain.all(),
+                    "jobs": isExist.applicants.all(),
+                })
+            else:
+                return render(request, "inhouse/search.html",{
+                    "message" : "برجاء التأكد من الرقم المدخل"
+                })
+
+# If the user serached by PhoneNumber    
+        elif len(nationalid) == 11:
+            isExist = Person.objects.filter(personPhoneNum = nationalid)
+            if isExist:
+                isExist = Person.objects.get(personPhoneNum = nationalid)
+                return render(request, "inhouse/searched.html",{
+                    "personInfo" : Person.objects.get(personPhoneNum = nationalid),
+                    "familiyInfo" : isExist.relatives.all(),
+                    "cases": isExist.complain.all(),
+                    "jobs": isExist.applicants.all(),
+                })
+            else:
+                return render(request, "inhouse/search.html",{
+                    "message" : "برجاء التأكد من الرقم المدخل"
+                })              

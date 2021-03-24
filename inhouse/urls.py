@@ -7,5 +7,6 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("newcase", views.newcase, name="newcase"),
     path("jobs", views.applyingjob, name="jobs"),
+    path("query", views.query, name="query"),
 ] 
  
