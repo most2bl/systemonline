@@ -32,7 +32,7 @@ class Families(models.Model):
 class Cases(models.Model):
     caseCode = models.CharField(max_length=12)
     casePersonaId = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="complain")
-    caseScannedDocs = models.FileField(upload_to='inhouse')
+    caseScannedDocs = models.FileField()
     caseTitle = models.CharField(max_length=64)
     caseDetails = models.TextField()
     caseStatus = models.CharField(max_length=12)
@@ -49,7 +49,7 @@ class Jobs(models.Model):
     jobEduMajor = models.CharField(max_length=64)
     jobExtraDetails = models.TextField(blank=True)
     JobResponsible = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="hr")
-    jobCV = models.FileField(upload_to='inhouse')
+    jobCV = models.FileField()
     
 
 class caseComments(models.Model):
