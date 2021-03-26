@@ -135,3 +135,7 @@ main img
     white-space: pre-wrap;
 
 }
+
+.newcaseSize {
+    line-height: 2.5;
+}

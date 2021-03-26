@@ -23,28 +23,28 @@
 <div dir="rtl" class="contanier  newcaseform card familyinfocard">
     <div class="row">
         <div class="col-12 col-md-4">
-        <h6>الأسم: {{personInfo.personName}}</h6>
+        <h6>الأسم: {{person.personName}}</h6>
         </div>
 
         <div class="col-12 col-md-4">
-        <h6>رقم الهاتف: {{personInfo.personPhoneNum}}</h6>
+        <h6>رقم الهاتف: {{person.personPhoneNum}}</h6>
         </div>
 
         <div class="col-12 col-md-4">
-        <h6>الرقم القومي: {{personInfo.nationalId}}</h6>
+        <h6>الرقم القومي: {{person.nationalId}}</h6>
         </div>
     </div>
         <br>
     <div class="row">
         <div class="col-12 col-md-4">
-        <h6>مكان الإصدار : {{personInfo.idDistrict}}</h6>
+        <h6>مكان الإصدار : {{person.idDistrict}}</h6>
         </div>
 
         <div class="col-12 col-md-4">
-        <h6>تاريخ إصدارها : {{personInfo.nationaldExpiryDate}}</h6>
+        <h6>تاريخ إصدارها : {{person.nationaldExpiryDate}}</h6>
         </div>
         <div class="col-12 col-md-4">
-        <h6> العنوان : {{personInfo.personAddress}}</h6>
+        <h6> العنوان : {{person.personAddress}}</h6>
         </div>
     </div>
 </div>
@@ -68,7 +68,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for member in familiyInfo %}
+    {% for member in family %}
     <tr>
       <th scope="row">{{member.individualName}}</th>
       <td>{{member.individualAge}}</td>
@@ -89,13 +89,13 @@
 </table>
 
 
-{% if cases %}
+{% if type == "case" %}
 <br><br>
-<h5>شكاوى او حالات انسانية</h5>
+<h5>الحالة المقدمة</h5>
 <div dir="rtl" class="contanier">
     <div class="row justify-content-center">
 
-        {% for case in cases %}
+       
         <div class="col-12 col">
             <div class="newcaseform card familyinfocard">
             <div class="d-inline">تاريخ المشكلة: {{case.caseDate}}</div>
@@ -111,49 +111,52 @@
                 <p> كود الطلب : {{case.caseCode}}</p>
               </div>
             </div>
+            {% if file %}
+            <a class="removewhenprint" href="../media/{{file.name}}">الإطلاع على الملفات المرفقة</a>
+            {% endif %}
         </div>
         </div>
-        {% endfor %}
+
 
     </div>
 </div>
-{% endif %}
 
 
-{% if jobs %}
+{% elif type == "job" %}
 <br><br>
-<h5>طلبات التوظيف</h5>
+<h5>طلب التوظيف</h5>
 <div dir="rtl" class="contanier">
     <div class="row justify-content-center">
 
-        {% for request in jobs %}
         <div class="col-12 col">
             <div class="newcaseform card familyinfocard">
-              <div class="d-inline">تاريخ المشكلة: {{request.jobDate}}</div>
+              <div class="d-inline">تاريخ المشكلة: {{case.jobDate}}</div>
               <br>
               <div class="row">
               <div class="col-6 col">
-                <p >الجامعة / المعهد : {{request.jobUniversity}}</p>
+                <p >الجامعة / المعهد : {{case.jobUniversity}}</p>
               </div>
               <div class="col-6 col">
-                <p>القسم والتخصص : {{request.jobEduMajor}}</p>
+                <p>القسم والتخصص : {{case.jobEduMajor}}</p>
               </div>
             </div>
 
             <p class="newcaseSize text-right">
-              {{ request.jobExtraDetails|linebreaksbr }}              
+              {{ case.jobExtraDetails|linebreaksbr }}              
               </p>
               <div class="row">
                 <div class="col-6 col text-right">
-                  <p > المسؤول عن الطلب : {{request.JobResponsible.first_name}} {{request.JobResponsible.last_name}}</p>
+                  <p > المسؤول عن الطلب : {{case.JobResponsible.first_name}} {{case.JobResponsible.last_name}}</p>
                 </div>
                 <div class="col-6 col text-left">
-                  <p> كود الطلب : {{request.jobCode}}</p>
+                  <p> كود الطلب : {{case.jobCode}}</p>
                 </div>
               </div>
+              {% if file %}
+              <a class="removewhenprint" href="../media/{{file.name}}">الإطلاع على الملفات المرفقة</a>
+              {% endif %}
         </div>
         </div>
-        {% endfor %} 
 
     </div>
 </div>

@@ -276,18 +276,49 @@ def query(request):
                     "message" : "برجاء التأكد من الرقم المدخل"
                 })
 
-# If the user serached by PhoneNumber    
-        elif len(nationalid) == 11:
-            isExist = Person.objects.filter(personPhoneNum = nationalid)
-            if isExist:
-                isExist = Person.objects.get(personPhoneNum = nationalid)
-                return render(request, "inhouse/searched.html",{
-                    "personInfo" : Person.objects.get(personPhoneNum = nationalid),
-                    "familiyInfo" : isExist.relatives.all(),
-                    "cases": isExist.complain.all(),
-                    "jobs": isExist.applicants.all(),
-                })
-            else:
-                return render(request, "inhouse/search.html",{
-                    "message" : "برجاء التأكد من الرقم المدخل"
-                })              
+# If the user serached by PhoneNumber   
+    #        elif len(nationalid) == 11:
+    #            isExist = Person.objects.filter(personPhoneNum = nationalid)
+    #            if isExist:
+    #                isExist = Person.objects.get(personPhoneNum = nationalid)
+    #                return render(request, "inhouse/searched.html",{
+    #                    "personInfo" : Person.objects.get(personPhoneNum = nationalid),
+    #                    "familiyInfo" : isExist.relatives.all(),
+    #                    "cases": isExist.complain.all(),
+    #                    "jobs": isExist.applicants.all(),
+    #                })
+    #            else:
+    #                return render(request, "inhouse/search.html",{
+    #                    "message" : "برجاء التأكد من الرقم المدخل"
+    #                })              
+
+# Getting a case by link
+def getCase(request,casecode):
+# Check if it's a case of job request
+    case = Cases.objects.filter(caseCode=casecode)
+    if case:
+        case = Cases.objects.get(caseCode=casecode)
+        person = case.CasePersonaId
+        return render(request, "inhouse/thecase.html",
+        {
+            "case" : case,
+            "person" : person,
+            "family" : person.relatives.all(),
+            "type" : "case",
+            "filename" : case.caseScannedDocs.name
+        })
+    else:
+        case = Jobs.objects.filter(jobCode=casecode) 
+        if case:
+            case = Jobs.objects.get(jobCode=casecode)
+            person = case.jobPersonaId
+            return render(request, "inhouse/thecase.html",
+            {
+                "case" : case,
+                "person" : person,
+                "family" : person.relatives.all(),
+                "type" : "job",
+                "file" : case.jobCV
+            })
+        else:
+            return render(request, "inhouse/index.html")

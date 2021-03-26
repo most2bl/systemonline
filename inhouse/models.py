@@ -39,6 +39,7 @@ class Cases(models.Model):
     caseStatus = models.CharField(max_length=12)
     caseDate = models.DateTimeField()
     caseResponsible = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="responsible")
+    
 
 
 class Jobs(models.Model):

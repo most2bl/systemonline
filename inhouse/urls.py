@@ -8,5 +8,6 @@ urlpatterns = [
     path("newcase", views.newcase, name="newcase"),
     path("jobs", views.applyingjob, name="jobs"),
     path("query", views.query, name="query"),
+    path("q/<int:casecode>", views.getCase, name="case"),
 ] 
  
