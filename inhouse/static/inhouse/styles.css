@@ -139,3 +139,8 @@ main img
 .newcaseSize {
     line-height: 2.5;
 }
+
+.casestatus
+{
+    color: #176dc3;
+}

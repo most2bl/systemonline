@@ -7,11 +7,12 @@
 
 {% block main %}
 <h3  class="removewhenprint">أبحث عن شخص آخر</h3>
-<form class="removewhenprint" action="/history" method="post">
+<form class="removewhenprint" action="{% url 'query' %}" method="post">
+  {% csrf_token %} 
   <div class="form-group newcaseform" dir="rtl">
       <div class="row justify-content-center">
           <div class="col-sm-6">
-    <input class="form-control" name="nationalid" id="exampleFormControlInput1" placeholder="ادخل الرقم القومي او رقم الهاتف او الاسم">
+    <input class="form-control" name="nationalid" id="exampleFormControlInput1" placeholder="ادخل الرقم القومي او كود الطلب">
         <input id="newcaseId" type="submit" class="btn btn-primary" value="إستعلم">
         </div>
      </div>
@@ -51,6 +52,7 @@
 
 <br><br><br>
 
+{% if familiyInfo %}
 <h3 class="text-center">معلومات العائلة</h3> <br>
 <table dir="rtl" class="table">
   <thead class="thead-dark">
@@ -87,7 +89,7 @@
     </div>
   </tbody>
 </table>
-
+{% endif %}
 
 {% if cases %}
 <br><br>
@@ -108,7 +110,7 @@
                 <p > المسؤول عن الطلب : {{case.caseResponsible.first_name}} {{case.caseResponsible.last_name}}</p>
               </div>
               <div class="col-6 col text-left">
-                <p> كود الطلب : {{case.caseCode}}</p>
+                <a href="{% url 'case' case.caseCode %}"> كود الطلب : {{case.caseCode}}</a>
               </div>
             </div>
         </div>
@@ -148,7 +150,7 @@
                   <p > المسؤول عن الطلب : {{request.JobResponsible.first_name}} {{request.JobResponsible.last_name}}</p>
                 </div>
                 <div class="col-6 col text-left">
-                  <p> كود الطلب : {{request.jobCode}}</p>
+                  <a href="{% url 'case' request.jobCode %}"> كود الطلب : {{request.jobCode}}</a>
                 </div>
               </div>
         </div>

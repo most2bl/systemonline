@@ -36,7 +36,7 @@ class Cases(models.Model):
     caseScannedDocs = models.FileField()
     caseTitle = models.CharField(max_length=64)
     caseDetails = models.TextField()
-    caseStatus = models.CharField(max_length=12)
+    caseStatus = models.CharField(max_length=20)
     caseDate = models.DateTimeField()
     caseResponsible = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="responsible")
     
@@ -46,7 +46,7 @@ class Jobs(models.Model):
     jobCode = models.CharField(max_length=12)
     jobPersonaId = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="applicants")
     jobDate = models.DateTimeField()
-    jobStatus = models.CharField(max_length=12)
+    jobStatus = models.CharField(max_length=20)
     jobUniversity = models.CharField(max_length=64)
     jobEduMajor = models.CharField(max_length=64)
     jobExtraDetails = models.TextField(blank=True)

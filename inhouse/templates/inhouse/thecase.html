@@ -7,11 +7,13 @@
 
 {% block main %}
 <h3  class="removewhenprint">أبحث عن شخص آخر</h3>
-<form class="removewhenprint" action="/history" method="post">
+<form class="removewhenprint" action="{% url 'query' %}" method="post">
+  {% csrf_token %} 
   <div class="form-group newcaseform" dir="rtl">
+    
       <div class="row justify-content-center">
           <div class="col-sm-6">
-    <input class="form-control" name="nationalid" id="exampleFormControlInput1" placeholder="ادخل الرقم القومي او رقم الهاتف او الاسم">
+    <input class="form-control" name="nationalid" id="exampleFormControlInput1" placeholder="ادخل الرقم القومي او كود الطلب ">
         <input id="newcaseId" type="submit" class="btn btn-primary" value="إستعلم">
         </div>
      </div>
@@ -47,10 +49,36 @@
         <h6> العنوان : {{person.personAddress}}</h6>
         </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col-12 col-md-4">
+        <h6> الحالة الإجتماعية : {{person.socialState}}</h6>
+        </div>
+
+        <div class="col-12 col-md-4">
+        <h6>الحالة الصحية  : {{person.healthState}}</h6>
+        </div>
+        <div class="col-12 col-md-4">
+        <h6> العمر : {{person.age}}</h6>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12 col-md-4">
+        <h6> الوظيفة  : {{person.personJob}}</h6>
+        </div>
+
+        <div class="col-12 col-md-4">
+        <h6>الراتب   : {{person.personSalary}} جنيه</h6>
+        </div>
+        <div class="col-12 col-md-4">
+        <h6> المستوى التعليمي : {{person.personEducationLevel}}</h6>
+        </div>
+    </div>
 </div>
 
 <br><br><br>
-
+{% if family %}
 <h3 class="text-center">معلومات العائلة</h3> <br>
 <table dir="rtl" class="table">
   <thead class="thead-dark">
@@ -87,11 +115,11 @@
     </div>
   </tbody>
 </table>
-
+{% endif %}
 
 {% if type == "case" %}
 <br><br>
-<h5>الحالة المقدمة</h5>
+<h5>{{case.caseTitle}}</h5>
 <div dir="rtl" class="contanier">
     <div class="row justify-content-center">
 
@@ -99,20 +127,22 @@
         <div class="col-12 col">
             <div class="newcaseform card familyinfocard">
             <div class="d-inline">تاريخ المشكلة: {{case.caseDate}}</div>
+            <br>
+            <span class="casestatus font-weight-bold">{{case.caseStatus}}</span>
             <p class="newcaseSize text-right">
               {{ case.caseDetails|linebreaksbr }}              
 
             </p>
             <div class="row">
               <div class="col-6 col text-right">
-                <p > المسؤول عن الطلب : {{case.caseResponsible.first_name}} {{case.caseResponsible.last_name}}</p>
+                <p > المسؤول عن الطلب : {{case.caseResponsible.first_name}} {{case.caseResponsible.last_name}} (<a data-toggle="modal" data-target="#exampleModal" href="#">تغير المسؤول عن الحالة</a>)</p>
               </div>
               <div class="col-6 col text-left">
                 <p> كود الطلب : {{case.caseCode}}</p>
               </div>
             </div>
             {% if file %}
-            <a class="removewhenprint" href="../media/{{file.name}}">الإطلاع على الملفات المرفقة</a>
+            <a  target="_blank" class="removewhenprint" href="../media/{{file.name}}">الإطلاع على الملفات المرفقة </a>
             {% endif %}
         </div>
         </div>
@@ -130,7 +160,9 @@
 
         <div class="col-12 col">
             <div class="newcaseform card familyinfocard">
-              <div class="d-inline">تاريخ المشكلة: {{case.jobDate}}</div>
+              <div class="d-inline">تاريخ الطلب: {{case.jobDate}}</div>
+              <br>
+              <span class="casestatus font-weight-bold">{{case.jobStatus}}</span>
               <br>
               <div class="row">
               <div class="col-6 col">
@@ -146,14 +178,14 @@
               </p>
               <div class="row">
                 <div class="col-6 col text-right">
-                  <p > المسؤول عن الطلب : {{case.JobResponsible.first_name}} {{case.JobResponsible.last_name}}</p>
+                  <p > المسؤول عن الطلب : {{case.JobResponsible.first_name}} {{case.JobResponsible.last_name}} <a  class="removewhenprint" data-toggle="modal" data-target="#exampleModal" href="#">تغير المسؤول عن الحالة</a></p>
                 </div>
                 <div class="col-6 col text-left">
                   <p> كود الطلب : {{case.jobCode}}</p>
                 </div>
               </div>
               {% if file %}
-              <a class="removewhenprint" href="../media/{{file.name}}">الإطلاع على الملفات المرفقة</a>
+              <a target="_blank" class="removewhenprint" href="../media/{{file.name}}">الإطلاع على الملفات المرفقة</a>
               {% endif %}
         </div>
         </div>
@@ -162,6 +194,67 @@
 </div>
 {% endif %}
 
+<div dir="rtl" class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-6 col text-right">
+        <p >كاتب التحديث : {{case.JobResponsible.first_name}} {{case.JobResponsible.last_name}} </p>
+      </div>
+      <div class="col-6 col text-left">
+        <p> التاريخ : {{case.jobCode}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+  </div>
+</div>
+
+<br><br>
+
 <button class="removewhenprint" onclick="window.print()">طباعة الصفحة</button>
+
+
+
+
+
+<!-- Modal -->
+<div dir="rtl" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div dir="rtl" class="modal-dialog" role="document">
+    <div dir="rtl" class="modal-content">
+      <div dir="rtl" class="modal-header">
+        <h5 class="modal-title text-center " id="exampleModalLabel">قم بإختيار الشخص المسؤول عن الحالة</h5>
+    
+      </div>
+      <div class="modal-body">
+        <!--Changing the responsible-->
+        <form dir="rtl" action="{% url 'changer' %}" method="post">
+          {% csrf_token %}
+          <select dir="rtl" name="userChanger" id="">
+              {% for user in users %}
+                  <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+           
+                 
+              {% endfor %}
+          </select>
+          {% if type == "case" %}
+          <input class="d-none" name="caseCodeforchange" value="{{case.caseCode}}"></input>
+          {% elif type == "job" %}
+          <input class="d-none" name="caseCodeforchange" value="{{case.jobCode}}"></input>
+          {% endif %}
+          <br><br>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+            <button type="submit" class="btn btn-primary">حفظ</button>
+          </div>
+      </form>
+        <!--Ending Changing the responsible-->
+      
+      </div>
+     
+    </div>
+  </div>
+</div>
 
 {% endblock %}

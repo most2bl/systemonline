@@ -9,5 +9,6 @@ urlpatterns = [
     path("jobs", views.applyingjob, name="jobs"),
     path("query", views.query, name="query"),
     path("q/<int:casecode>", views.getCase, name="case"),
+    path("changetheresbonsible", views.changer, name="changer"),
 ] 
  

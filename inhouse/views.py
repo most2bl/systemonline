@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -52,7 +52,7 @@ def newcase(request):
             return render(request, "inhouse/newcase.html", {
                 "message" : "برجاء إدخال رقم بطاقة صالح"
             })   
-        age = getAge(int(request.POST["theid"]))
+        age = getAge(request.POST["theid"])
         socialState = request.POST["thesocialstate"]
         healthState = request.POST["thehealthstate"]
         personPhoneNum = request.POST["thephone"]
@@ -104,11 +104,11 @@ def newcase(request):
                          }) 
         uploadedfile = request.POST["uploadedfile"]
         while True:
-            caseCode =  f"9{randint(1,999999)}"
+            caseCode =  f"9{randint(100000,999999)}"
             caseExist = Cases.objects.filter(caseCode = caseCode)
             if not caseExist:
                 break
-        caseStatus = "new"
+        caseStatus = "جاري العمل عليها"
         now = datetime.now()
         xZDate = now.strftime('%Y-%m-%d %H:%M:%S')
         current_user = request.user
@@ -158,7 +158,7 @@ def applyingjob(request):
             return render(request, "inhouse/jobs.html", {
                 "message" : "برجاء إدخال رقم بطاقة صالح"
             })   
-        age = getAge(int(request.POST["theid"]))
+        age = getAge(request.POST["theid"])
         socialState = request.POST["thesocialstate"]
         healthState = request.POST["thehealthstate"]
         personPhoneNum = request.POST["thephone"]
@@ -209,11 +209,11 @@ def applyingjob(request):
                          }) 
         uploadedfile = request.POST["uploadedfile"]
         while True:
-            caseCode =  f"1{randint(1,999999)}"
+            caseCode =  f"1{randint(100000,999999)}"
             caseExist = Cases.objects.filter(caseCode = caseCode)
             if not caseExist:
                 break
-        caseStatus = "new"
+        caseStatus = "جاري العمل عليها"
         now = datetime.now()
         xZDate = now.strftime('%Y-%m-%d %H:%M:%S')
         current_user = request.user
@@ -275,6 +275,47 @@ def query(request):
                 return render(request, "inhouse/search.html",{
                     "message" : "برجاء التأكد من الرقم المدخل"
                 })
+        elif len(nationalid) == 7 and nationalid[0] == '9':
+            isExist = Cases.objects.filter(caseCode = nationalid)
+            if isExist:
+                case = Cases.objects.get(caseCode=nationalid)
+                person = case.casePersonaId
+                users = User.objects.all()
+                return render(request, "inhouse/thecase.html",
+                    {
+                    "case" : case,
+                    "person" : person,
+                    "family" : person.relatives.all(),
+                    "type" : "case",
+                    "file" : case.caseScannedDocs,
+                    "users" : users
+                    })
+            else:
+                return render(request, "inhouse/search.html",{
+                    "message" : "برجاء التأكد من الرقم المدخل"
+                })
+        elif len(nationalid) == 7 and nationalid[0] == '1':
+            isExist = Jobs.objects.filter(jobCode = nationalid)  
+            if isExist:
+                case = Jobs.objects.get(jobCode=nationalid)
+                person = case.jobPersonaId
+                users = User.objects.all()
+                return render(request, "inhouse/thecase.html",
+                {
+                    "case" : case,
+                    "person" : person,
+                    "family" : person.relatives.all(),
+                    "type" : "job",
+                    "file" : case.jobCV,
+                    "users" : users
+                })
+        else:
+            return render(request, "inhouse/search.html",{
+                    "message" : "برجاء التأكد من الرقم المدخل"
+                })        
+
+
+
 
 # If the user serached by PhoneNumber   
     #        elif len(nationalid) == 11:
@@ -294,18 +335,22 @@ def query(request):
 
 # Getting a case by link
 def getCase(request,casecode):
+# Make Sure the user logged in
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
 # Check if it's a case of job request
     case = Cases.objects.filter(caseCode=casecode)
     if case:
         case = Cases.objects.get(caseCode=casecode)
-        person = case.CasePersonaId
+        person = case.casePersonaId
         return render(request, "inhouse/thecase.html",
         {
             "case" : case,
             "person" : person,
             "family" : person.relatives.all(),
             "type" : "case",
-            "filename" : case.caseScannedDocs.name
+            "file" : case.caseScannedDocs,
+            "users" : User.objects.all()
         })
     else:
         case = Jobs.objects.filter(jobCode=casecode) 
@@ -318,7 +363,25 @@ def getCase(request,casecode):
                 "person" : person,
                 "family" : person.relatives.all(),
                 "type" : "job",
-                "file" : case.jobCV
+                "file" : case.jobCV,
+                "users" : User.objects.all()
             })
         else:
             return render(request, "inhouse/index.html")
+
+
+# Changing the responsible
+def changer(request):
+# Make Sure the user logged in
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    if request.method == "POST":     
+        gottenUser = request.POST["userChanger"]
+        caseCodeforchange = request.POST["caseCodeforchange"]
+        if caseCodeforchange[0] == '9':
+            update = Cases.objects.filter(caseCode=caseCodeforchange).update(caseResponsible=User.objects.get(id=gottenUser))
+        elif caseCodeforchange[0] == '1':
+            update = Jobs.objects.filter(jobCode=caseCodeforchange).update(JobResponsible=User.objects.get(id=gottenUser))    
+        return HttpResponseRedirect(f"q/{caseCodeforchange}")
+
+
