@@ -55,15 +55,15 @@ class Jobs(models.Model):
     
 
 class caseComments(models.Model):
-    caseCommentCode = models.ForeignKey(Cases, on_delete=models.CASCADE, related_name="caseUpdates")
-    caseCommentText = models.TextField()
-    caseCommentDate = models.DateTimeField()
-    caseCommentWriter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="caseCommentOwner")
+    CommentCode = models.ForeignKey(Cases, on_delete=models.CASCADE, related_name="caseUpdates")
+    CommentText = models.TextField()
+    CommentDate = models.DateTimeField(auto_now_add=True, blank=True)
+    CommentWriter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="caseCommentOwner")
 
 class jobComments(models.Model):
-    jobCommentCode = models.ForeignKey(Cases, on_delete=models.CASCADE, related_name="jobUpdates")
-    jobCommentText = models.TextField()
-    jobCommentDate = models.DateTimeField()
-    JobCommentWriter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="jobCommentOwner")
+    CommentCode = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name="jobUpdates")
+    CommentText = models.TextField()
+    CommentDate = models.DateTimeField(auto_now_add=True, blank=True)
+    CommentWriter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="jobCommentOwner")
 
 

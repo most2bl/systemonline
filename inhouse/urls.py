@@ -10,5 +10,7 @@ urlpatterns = [
     path("query", views.query, name="query"),
     path("q/<int:casecode>", views.getCase, name="case"),
     path("changetheresbonsible", views.changer, name="changer"),
+    path("addacommenttothecase", views.comment, name="comment"),
+    path("closeTheCase", views.close, name="close"),
 ] 
  

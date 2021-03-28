@@ -144,12 +144,24 @@
             {% if file %}
             <a  target="_blank" class="removewhenprint" href="../media/{{file.name}}">الإطلاع على الملفات المرفقة </a>
             {% endif %}
+            
         </div>
         </div>
 
 
     </div>
 </div>
+{% if case.caseStatus == 'ongoing' or case.caseStatus == 'new' %}
+<form  action="{% url 'close' %}" method="post">
+  {% csrf_token %} 
+<button type="submit" class="removewhenprint btn btn-danger"> إغلاق الطلب</button>
+{% if type == "case" %}
+<input class="d-none" name="caseCodeforchange" value="{{case.caseCode}}"></input>
+{% elif type == "job" %}
+<input class="d-none" name="caseCodeforchange" value="{{case.jobCode}}"></input>
+{% endif %}
+</form>
+{% endif %}
 
 
 {% elif type == "job" %}
@@ -178,7 +190,7 @@
               </p>
               <div class="row">
                 <div class="col-6 col text-right">
-                  <p > المسؤول عن الطلب : {{case.JobResponsible.first_name}} {{case.JobResponsible.last_name}} <a  class="removewhenprint" data-toggle="modal" data-target="#exampleModal" href="#">تغير المسؤول عن الحالة</a></p>
+                  <p > المسؤول عن الطلب : {{case.JobResponsible.first_name}} {{case.JobResponsible.last_name}} <a  class="removewhenprint" data-toggle="modal" data-target="#exampleModal" href="#">(تغير المسؤول عن الحالة)</a></p>
                 </div>
                 <div class="col-6 col text-left">
                   <p> كود الطلب : {{case.jobCode}}</p>
@@ -187,34 +199,85 @@
               {% if file %}
               <a target="_blank" class="removewhenprint" href="../media/{{file.name}}">الإطلاع على الملفات المرفقة</a>
               {% endif %}
+
+
         </div>
         </div>
 
     </div>
 </div>
+{% if case.jobStatus == 'ongoing' or case.jobStatus == 'new' %}
+<form  action="{% url 'close' %}" method="post">
+  {% csrf_token %} 
+<button type="submit" class="removewhenprint btn btn-danger"> إغلاق الطلب</button>
+{% if type == "case" %}
+<input class="d-none" name="caseCodeforchange" value="{{case.caseCode}}"></input>
+{% elif type == "job" %}
+<input class="d-none" name="caseCodeforchange" value="{{case.jobCode}}"></input>
+{% endif %}
+</form>
+{% endif %}
 {% endif %}
 
+{% if updates %}
+<br><br>
+{% for update in updates %}
 <div dir="rtl" class="card">
   <div class="card-header">
     <div class="row">
       <div class="col-6 col text-right">
-        <p >كاتب التحديث : {{case.JobResponsible.first_name}} {{case.JobResponsible.last_name}} </p>
+        <p >كاتب التحديث : {{update.CommentWriter.first_name}} {{update.CommentWriter.last_name}} </p>
       </div>
       <div class="col-6 col text-left">
-        <p> التاريخ : {{case.jobCode}}</p>
+        <p> التاريخ : {{update.CommentDate}}</p>
       </div>
     </div>
   </div>
   <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
+    <h5 class="card-title">
+      {{ update.CommentText|linebreaksbr }}
+    </h5>
   </div>
 </div>
-
 <br><br>
+{% endfor %}
+{% endif %}
+<br>
 
+<!-- Adding A comment -->
+<button type="button" class="btn btn-primary removewhenprint" data-toggle="modal" data-target=".bd-example-modal-lg">إضافة تحديث للحالة</button>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form class="card" dir="rtl" action="{% url 'comment' %}" method="post">
+        {% csrf_token %} 
+        <div class="card-header">
+          <h5>إضافة تحديث للحالة</h5>
+        </div>
+        <br>
+          <textarea name="addedcomment"dir="rtl" style="min-height: 200px" class="form-control" id="exampleFormControlTextarea1"></textarea>
+          <br>
+ 
+          {% if type == "case" %}
+          <input class="d-none" name="caseCodeforchange" value="{{case.caseCode}}"></input>
+          {% elif type == "job" %}
+          <input class="d-none" name="caseCodeforchange" value="{{case.jobCode}}"></input>
+          {% endif %}
+        <br><br>
+
+        <div dir="rtl" class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+          <button type="submit" class="btn btn-primary">حفظ</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!-- Ending Adding A comment -->
+
+<br><br><br>
 <button class="removewhenprint" onclick="window.print()">طباعة الصفحة</button>
-
-
 
 
 
@@ -250,6 +313,9 @@
           </div>
       </form>
         <!--Ending Changing the responsible-->
+      
+
+    
       
       </div>
      

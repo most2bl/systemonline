@@ -110,7 +110,8 @@
                 <p > المسؤول عن الطلب : {{case.caseResponsible.first_name}} {{case.caseResponsible.last_name}}</p>
               </div>
               <div class="col-6 col text-left">
-                <a href="{% url 'case' case.caseCode %}"> كود الطلب : {{case.caseCode}}</a>
+                <p> كود الطلب : {{case.caseCode}}</p>
+                <a class="removewhenprint" href="{% url 'case' case.caseCode %}">الإطلاع على المشكلة</a>
               </div>
             </div>
         </div>
@@ -150,7 +151,8 @@
                   <p > المسؤول عن الطلب : {{request.JobResponsible.first_name}} {{request.JobResponsible.last_name}}</p>
                 </div>
                 <div class="col-6 col text-left">
-                  <a href="{% url 'case' request.jobCode %}"> كود الطلب : {{request.jobCode}}</a>
+                  <p> كود الطلب : {{request.jobCode}}</p>
+                  <a class="removewhenprint" href="{% url 'case' request.jobCode %}"> الإطلاع على الطلب</a>
                 </div>
               </div>
         </div>
