@@ -12,5 +12,7 @@ urlpatterns = [
     path("changetheresbonsible", views.changer, name="changer"),
     path("addacommenttothecase", views.comment, name="comment"),
     path("closeTheCase", views.close, name="close"),
+    path("mycases", views.mycases, name="mycases"),
+    path("myjobs", views.myjobs, name="myjobs"),
 ] 
  

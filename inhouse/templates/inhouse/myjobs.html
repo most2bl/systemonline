@@ -1,1 +1,43 @@
- 
+{% extends "inhouse/layout.html" %}
+
+{% block title %}
+إستعلام
+{% endblock %}
+
+
+{% block main %}
+
+{% if cases %}
+
+<h5>وظائف مسندة إلي</h5>
+<br><br>
+<div dir="rtl" class="contanier">
+    <div class="row justify-content-center">
+
+        {% for case in cases %}
+        {% if case.jobStatus == 'ongoing' or case.jobStatus == 'new' %}
+        <br><br>
+        <div class="col-12 col">
+            <h5>{{case.jobEduMajor}}</h5>
+            <div class="newcaseform card familyinfocard">
+            <div class="d-inline">تاريخ المشكلة: {{case.jobDate}}</div>
+            <p class="newcaseSize text-right">
+              {{ case.jobExtraDetails|linebreaksbr }}              
+            </p>
+            <div class="row">
+              <div class="col-12 col text-left">
+                <p> كود الطلب : {{case.jobCode}}</p>
+                <a class="removewhenprint" href="{% url 'case' case.jobCode %}">الإطلاع على المشكلة</a>
+              </div>
+            </div>
+        </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock %}

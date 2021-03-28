@@ -395,3 +395,23 @@ def close(request):
         elif caseCodeforchange[0] == '1':
             update = Jobs.objects.filter(jobCode=caseCodeforchange).update(jobStatus=newstatus)
         return HttpResponseRedirect(f"q/{caseCodeforchange}")
+
+# My cases
+def mycases(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    gottenUser =  request.user
+    theirCases = gottenUser.responsible.all()
+    return render(request, "inhouse/mycases.html", {
+        "cases" : theirCases
+    })        
+
+# My Jobs
+def myjobs(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    gottenUser =  request.user
+    theirCases = gottenUser.hr.all()
+    return render(request, "inhouse/myjobs.html", {
+        "cases" : theirCases
+    })        

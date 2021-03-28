@@ -48,11 +48,37 @@
         <h6> العنوان : {{personInfo.personAddress}}</h6>
         </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col-12 col-md-4">
+        <h6> الحالة الإجتماعية : {{personInfo.socialState}}</h6>
+        </div>
+
+        <div class="col-12 col-md-4">
+        <h6>الحالة الصحية  : {{personInfo.healthState}}</h6>
+        </div>
+        <div class="col-12 col-md-4">
+        <h6> العمر : {{personInfo.age}}</h6>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12 col-md-4">
+        <h6> الوظيفة  : {{personInfo.personJob}}</h6>
+        </div>
+
+        <div class="col-12 col-md-4">
+        <h6>الراتب   : {{personInfo.personSalary}} جنيه</h6>
+        </div>
+        <div class="col-12 col-md-4">
+        <h6> المستوى التعليمي : {{personInfo.personEducationLevel}}</h6>
+        </div>
+    </div>
 </div>
 
-<br><br><br>
 
 {% if familiyInfo %}
+<br><br><br>
 <h3 class="text-center">معلومات العائلة</h3> <br>
 <table dir="rtl" class="table">
   <thead class="thead-dark">
