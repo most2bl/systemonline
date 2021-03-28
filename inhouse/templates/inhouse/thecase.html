@@ -128,7 +128,15 @@
             <div class="newcaseform card familyinfocard">
             <div class="d-inline">تاريخ المشكلة: {{case.caseDate}}</div>
             <br>
-            <span class="casestatus font-weight-bold">{{case.caseStatus}}</span>
+            <span class="casestatus font-weight-bold">
+              {% if case.caseStatus == 'new'%}
+                جديدة
+                {% elif case.caseStatus == 'ongoing' %}
+                جاري العمل عليها
+                {% else %}
+                مغلقة
+                {% endif %}
+            </span>
             <p class="newcaseSize text-right">
               {{ case.caseDetails|linebreaksbr }}              
 
@@ -174,7 +182,15 @@
             <div class="newcaseform card familyinfocard">
               <div class="d-inline">تاريخ الطلب: {{case.jobDate}}</div>
               <br>
-              <span class="casestatus font-weight-bold">{{case.jobStatus}}</span>
+              <span class="casestatus font-weight-bold">
+                {% if case.jobStatus == 'new'%}
+                جديدة
+                {% elif case.jobStatus == 'ongoing' %}
+                جاري العمل عليها
+                {% else %}
+                مغلقة
+                {% endif %}
+              </span>
               <br>
               <div class="row">
               <div class="col-6 col">
