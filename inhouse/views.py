@@ -436,7 +436,7 @@ def allnewcases(request):
         "cases" : cases
     })
 
-# All New Cases
+# All ongoing Cases
 def ongoingcases(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
@@ -475,5 +475,63 @@ def closedcases(request):
     return render(request, "inhouse/closedcases.html", {
         "cases" : cases
     })        
-
     
+# All new jobs
+def allnewjobs(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    cases_list = Jobs.objects.all().order_by('-id')   
+    paginator = Paginator(cases_list, 5)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1    
+
+    try:
+        cases = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        cases = paginator.page(paginator.num_pages)
+    return render(request, "inhouse/alljobs.html", {
+        "cases" : cases
+    })            
+
+# All ongoing jobs
+def ongoingjobs(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    cases_list = Jobs.objects.all().order_by('-id')   
+    paginator = Paginator(cases_list, 5)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1    
+
+    try:
+        cases = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        cases = paginator.page(paginator.num_pages)
+    return render(request, "inhouse/ongoingjobs.html", {
+        "cases" : cases
+    })                
+
+# All closed jobs
+def closedjobs(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    cases_list = Jobs.objects.all().order_by('-id')   
+    paginator = Paginator(cases_list, 5)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1    
+
+    try:
+        cases = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        cases = paginator.page(paginator.num_pages)
+    return render(request, "inhouse/closedjobs.html", {
+        "cases" : cases
+    })            

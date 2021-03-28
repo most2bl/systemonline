@@ -17,5 +17,9 @@ urlpatterns = [
     path("allnewcases", views.allnewcases, name="newcases"),
     path("ongoingcases", views.ongoingcases, name="ongoingcases"),
     path("closedcases", views.closedcases, name="closedcases"),
+    path("allnewjobs", views.allnewjobs, name="allnewjobs"),
+    path("ongoingjobs", views.ongoingjobs, name="ongoingjobs"),
+    path("closedjobs", views.closedjobs, name="closedjobs"),
+
 ] 
  

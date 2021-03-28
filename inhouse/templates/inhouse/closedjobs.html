@@ -14,7 +14,7 @@
 
 
         {% for case in cases.object_list %}
-        {% if case.jobStatus == 'new' %}
+        {% if case.jobStatus == 'closed' %}
         <br><br>
         <div class="card">
             <h5 class="card-header">{{case.jobEduMajor}}</h5>

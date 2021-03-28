@@ -68,11 +68,11 @@
                                 <div dir="rtl" class="dropdown-menu" aria-labelledby="navbarDropdown">
                                   <a dir="rtl"class="dropdown-item" href="{% url 'jobs' %}"> تقديم طلب </a>
                                   <div class="dropdown-divider"></div>
-                                  <a class="dropdown-item" href="#">عرض الطلبات</a>
+                                  <a class="dropdown-item" href="{% url 'allnewjobs' %}">عرض الطلبات</a>
                                   <div class="dropdown-divider"></div>
-                                  <a class="dropdown-item" href="#">الطلبات الجارية</a>
+                                  <a class="dropdown-item" href="{% url 'ongoingjobs' %}">الطلبات الجارية</a>
                                   <div class="dropdown-divider"></div>
-                                  <a class="dropdown-item" href="#">الطلبات المغلقة</a>
+                                  <a class="dropdown-item" href="{% url 'closedjobs' %}">الطلبات المغلقة</a>
                                 </div>
                               </li>                            <li class="nav-item"><a class="nav-link" href="{% url 'query' %}">إستعلام</a></li>
                         </ul>
