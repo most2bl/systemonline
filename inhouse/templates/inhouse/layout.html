@@ -53,11 +53,11 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                   <a class="dropdown-item" href="{% url 'newcase' %}">تسجيل حالة جديدة</a>
                                   <div class="dropdown-divider"></div>
-                                  <a class="dropdown-item" href="#">الحالات الجديدة</a>
+                                  <a class="dropdown-item" href="{% url 'newcases' %}">الحالات الجديدة</a>
                                   <div class="dropdown-divider"></div>
-                                  <a class="dropdown-item" href="#">الحالات الجارية</a>
+                                  <a class="dropdown-item" href="{% url 'ongoingcases' %}">الحالات الجارية</a>
                                   <div class="dropdown-divider"></div>
-                                  <a class="dropdown-item" href="#">الحالات المغلقة</a>
+                                  <a class="dropdown-item" href="{% url 'closedcases' %}">الحالات المغلقة</a>
                                   
                                 </div>
                               </li>

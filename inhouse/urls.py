@@ -14,5 +14,8 @@ urlpatterns = [
     path("closeTheCase", views.close, name="close"),
     path("mycases", views.mycases, name="mycases"),
     path("myjobs", views.myjobs, name="myjobs"),
+    path("allnewcases", views.allnewcases, name="newcases"),
+    path("ongoingcases", views.ongoingcases, name="ongoingcases"),
+    path("closedcases", views.closedcases, name="closedcases"),
 ] 
  

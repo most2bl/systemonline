@@ -7,7 +7,7 @@ from .models import *
 from .helpers import *
 from random import randint
 from datetime import datetime
-
+from django.core.paginator import Paginator
 # Create your views here.
 
 # The Index page
@@ -415,3 +415,65 @@ def myjobs(request):
     return render(request, "inhouse/myjobs.html", {
         "cases" : theirCases
     })        
+
+# All New Cases
+def allnewcases(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    cases_list = Cases.objects.all().order_by('-id')   
+    paginator = Paginator(cases_list, 5)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1    
+
+    try:
+        cases = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        cases = paginator.page(paginator.num_pages)
+    return render(request, "inhouse/allcases.html", {
+        "cases" : cases
+    })
+
+# All New Cases
+def ongoingcases(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    cases_list = Cases.objects.all().order_by('-id')   
+    paginator = Paginator(cases_list, 5)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1    
+
+    try:
+        cases = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        cases = paginator.page(paginator.num_pages)
+    return render(request, "inhouse/ongoingcases.html", {
+        "cases" : cases
+    })    
+
+# All closed Cases
+def closedcases(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    cases_list = Cases.objects.all().order_by('-id')   
+    paginator = Paginator(cases_list, 5)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1    
+
+    try:
+        cases = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        cases = paginator.page(paginator.num_pages)
+    return render(request, "inhouse/closedcases.html", {
+        "cases" : cases
+    })        
+
+    

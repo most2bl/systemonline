@@ -9,12 +9,12 @@
 
 {% if cases %}
 
-<h5>شكاوى او حالات انسانية جديدة</h5>
+<h5>شكاوى او حالات انسانية مغلفة</h5>
 
 
 
         {% for case in cases.object_list %}
-        {% if case.caseStatus == 'new' %}
+        {% if case.caseStatus == 'closed' %}
         <br><br>
         <div class="card">
             <h5 class="card-header">{{case.caseTitle}}</h5>
@@ -27,12 +27,13 @@
               <a href="{% url 'case' case.caseCode %}" class="btn btn-primary">إطلع على تفاصيل المشكلة</a>
             </div>
           </div>
+
+        
         {% endif %}
         {% endfor %}
-     
 
 {% else %}
-<h5>لا يوجد حالات جديدة</h5>
+<h5>لا يوجد حالات مغلقة</h5>
 {% endif %}
 
 <br>
