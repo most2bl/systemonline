@@ -15,7 +15,7 @@
         
                 <h2 align ="center">المعلومات الشخصية ومعلومات التواصل </h2>
                 <div dir="rtl" class="form-group">
-                     <form dir="rtl" action="{% url 'jobs' %}" method="post" name="add_name" id="add_name">
+                     <form dir="rtl" action="{% url 'jobs' %}" method="post"  enctype="multipart/form-data" name="add_name" id="add_name">
                         {% csrf_token %} 
                          <!-- The information section -->
                                      <div class="form-group newcaseform">
