@@ -109,8 +109,6 @@ def newcase(request):
             if not caseExist:
                 break
         caseStatus = "new"
-        now = datetime.now()
-        xZDate = now.strftime('%Y-%m-%d %H:%M:%S')
         current_user = request.user
 #Insert into persona info
         if not isExist:
@@ -135,9 +133,9 @@ def newcase(request):
                     fthePerson = Families.objects.create(personaId=Person.objects.get(nationalId = nationalId), individualName=ftheName, individualAge=ftheAge, individualJob=fjob, individualHealthState=fhealthstate,individualSocialState=fsocialstate, individualEduLevel=fdegree, individualSalary=fsalary)
 # Inserting into Cases
         if uploadedfile:
-            cTheCase = Cases.objects.create(caseCode=caseCode,casePersonaId=Person.objects.get(nationalId = nationalId),caseScannedDocs=uploadedfile,caseTitle=cTitle,caseDetails=cContent,caseStatus=caseStatus,caseDate=xZDate, caseResponsible = User.objects.get(id = current_user.id))
+            cTheCase = Cases.objects.create(caseCode=caseCode,casePersonaId=Person.objects.get(nationalId = nationalId),caseScannedDocs=uploadedfile,caseTitle=cTitle,caseDetails=cContent,caseStatus=caseStatus, caseResponsible = User.objects.get(id = current_user.id))
         else:
-            cTheCase = Cases.objects.create(caseCode=caseCode,casePersonaId=Person.objects.get(nationalId = nationalId),caseTitle=cTitle,caseDetails=cContent,caseStatus=caseStatus,caseDate=xZDate, caseResponsible = User.objects.get(id = current_user.id))
+            cTheCase = Cases.objects.create(caseCode=caseCode,casePersonaId=Person.objects.get(nationalId = nationalId),caseTitle=cTitle,caseDetails=cContent,caseStatus=caseStatus, caseResponsible = User.objects.get(id = current_user.id))
            
         
         return render(request, "inhouse/newcase.html", {
@@ -214,8 +212,6 @@ def applyingjob(request):
             if not caseExist:
                 break
         caseStatus = "new"
-        now = datetime.now()
-        xZDate = now.strftime('%Y-%m-%d %H:%M:%S')
         current_user = request.user
 #Insert into persona info
         if not isExist:
@@ -240,9 +236,9 @@ def applyingjob(request):
                     fthePerson = Families.objects.create(individualRole=frelationship,personaId=Person.objects.get(nationalId = nationalId), individualName=ftheName, individualAge=ftheAge, individualJob=fjob, individualHealthState=fhealthstate,individualSocialState=fsocialstate, individualEduLevel=fdegree, individualSalary=fsalary)
  # Inserting into Jobs
         if uploadedfile:
-            cTheCase = Jobs.objects.create(jobCode=caseCode,jobPersonaId=Person.objects.get(nationalId = nationalId),jobCV=uploadedfile,jobUniversity=jUniversity,jobExtraDetails=cContent,jobStatus=caseStatus,jobDate=xZDate, JobResponsible = User.objects.get(id = current_user.id),jobEduMajor=jDepartment)
+            cTheCase = Jobs.objects.create(jobCode=caseCode,jobPersonaId=Person.objects.get(nationalId = nationalId),jobCV=uploadedfile,jobUniversity=jUniversity,jobExtraDetails=cContent,jobStatus=caseStatus, JobResponsible = User.objects.get(id = current_user.id),jobEduMajor=jDepartment)
         else:
-            cTheCase = Jobs.objects.create(jobCode=caseCode,jobPersonaId=Person.objects.get(nationalId = nationalId),jobUniversity=jUniversity,jobExtraDetails=cContent,jobStatus=caseStatus,jobDate=xZDate, JobResponsible = User.objects.get(id = current_user.id), jobEduMajor=jDepartment)
+            cTheCase = Jobs.objects.create(jobCode=caseCode,jobPersonaId=Person.objects.get(nationalId = nationalId),jobUniversity=jUniversity,jobExtraDetails=cContent,jobStatus=caseStatus, JobResponsible = User.objects.get(id = current_user.id), jobEduMajor=jDepartment)
            
         
         return render(request, "inhouse/jobs.html", {
@@ -420,7 +416,7 @@ def myjobs(request):
 def allnewcases(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
-    cases_list = Cases.objects.all().order_by('-id')   
+    cases_list = Cases.objects.filter(caseStatus="new").order_by('-id')   
     paginator = Paginator(cases_list, 5)
 
     try:
@@ -440,7 +436,7 @@ def allnewcases(request):
 def ongoingcases(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
-    cases_list = Cases.objects.all().order_by('-id')   
+    cases_list = Cases.objects.filter(caseStatus="ongoing").order_by('-id')   
     paginator = Paginator(cases_list, 5)
 
     try:
@@ -460,7 +456,7 @@ def ongoingcases(request):
 def closedcases(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
-    cases_list = Cases.objects.all().order_by('-id')   
+    cases_list = Cases.objects.filter(caseStatus="closed").order_by('-id')   
     paginator = Paginator(cases_list, 5)
 
     try:
@@ -480,7 +476,7 @@ def closedcases(request):
 def allnewjobs(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
-    cases_list = Jobs.objects.all().order_by('-id')   
+    cases_list = Jobs.objects.filter(jobStatus="new").order_by('-id')   
     paginator = Paginator(cases_list, 5)
 
     try:
@@ -500,7 +496,7 @@ def allnewjobs(request):
 def ongoingjobs(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
-    cases_list = Jobs.objects.all().order_by('-id')   
+    cases_list = Jobs.objects.filter(jobStatus="ongoing").order_by('-id')   
     paginator = Paginator(cases_list, 5)
 
     try:
@@ -520,7 +516,7 @@ def ongoingjobs(request):
 def closedjobs(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
-    cases_list = Jobs.objects.all().order_by('-id')   
+    cases_list = Jobs.objects.filter(jobStatus="closed").order_by('-id')   
     paginator = Paginator(cases_list, 5)
 
     try:
