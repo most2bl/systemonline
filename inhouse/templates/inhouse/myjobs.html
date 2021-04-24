@@ -11,9 +11,8 @@
       {% if cases %}
       
       <h5>شكاوى او حالات انسانية مسندة إلي</h5>
-      <br><br>
+      <br>
       <div dir="rtl" class="contanier">
-          <div class="row justify-content-center">
       
               {% for case in cases %}
               {% if case.jobStatus == 'ongoing' or case.jobStatus == 'new' %}
@@ -34,7 +33,6 @@
               {% endif %}
               {% endfor %}
       
-          </div>
       </div>
       {% else %}
       <h5>لا يوجد حالات مسندة إليك</h5>

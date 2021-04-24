@@ -102,7 +102,7 @@ def newcase(request):
             return render(request, "inhouse/newcase.html", {
                         "message" : "برجاء إدخال تفاصيل المشكلة"
                          }) 
-        uploadedfile =  request.FILES["uploadedfile"]
+        uploadedfile =  request.FILES.get("uploadedfile", False)
         while True:
             caseCode =  f"9{randint(100000,999999)}"
             caseExist = Cases.objects.filter(caseCode = caseCode)
@@ -205,7 +205,7 @@ def applyingjob(request):
             return render(request, "inhouse/jobs.html", {
                         "message" : "برجاء إدخال تفاصيل المشكلة"
                          }) 
-        uploadedfile = request.FILES["uploadedfile"]
+        uploadedfile = request.FILES.get("uploadedfile", False)
         while True:
             caseCode =  f"1{randint(100000,999999)}"
             caseExist = Cases.objects.filter(caseCode = caseCode)
