@@ -1,7 +1,7 @@
 {% extends "inhouse/layout.html" %}
 
 {% block title %}
-إستعلام
+جميع الوظائف
 {% endblock %}
 
 
@@ -21,7 +21,7 @@
             <div class="card-body">
               <h6 dir="rtl" class="card-title">تاريخ الطلب: {{case.jobDate}}</h6>
               <br>
-              <h5 class="card-text">{{ case.jobExtraDetails|linebreaksbr }}</h5>
+              <p class="card-text">{{ case.jobExtraDetails|linebreaksbr }}</p>
               <br>
               <p class="text-left"> كود الطلب : {{case.jobCode}}</p>
               <a href="{% url 'case' case.jobCode %}" class="btn btn-primary">إطلع على تفاصيل الطلب</a>
